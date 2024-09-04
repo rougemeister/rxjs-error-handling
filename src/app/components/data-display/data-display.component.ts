@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf,
 })
 export class DataDisplayComponent {
   data: any;
-  fallBackArr = [ 'Data 1', 'Data 2']
+  fallBackArr = [ "2 cups rice (long-grain parboiled or basmati)", 
+    "4-5 medium tomatoes, chopped (or 1 can of diced tomatoes)"]
   loading = false;
   error: string | null = null;
 

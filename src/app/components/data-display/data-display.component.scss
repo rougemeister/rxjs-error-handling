@@ -10,6 +10,18 @@
 
 }
 
+
+.error-message {
+    color: white;
+    background-color: rgb(255, 23, 23);
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 12px;
+    margin-top: 10px;  
+    font-weight: 600;
+    text-shadow: 0 0 5px grey;
+}
 a {
     text-decoration: none;
 }
@@ -99,9 +111,10 @@ height: 45px;
     padding: 25px;
 }
 
-li{
 
-    list-style-type: none;
+ul {
+    // list-style-type: none;
+    padding: 15px; 
 }
 
 .loader {
