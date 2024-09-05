@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { of, throwError, Observable } from 'rxjs';
+import { delay, mergeMap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpService {
 
-  constructor(private http: HttpClient) { }
-
-  getData(): Observable<any> {
-    // Simulate an HTTP request with random success/failure
-    const success = Math.random() > 0.5;
-
-    if (success) {
-      return of({ data: 'Success' }).pipe(delay(1000)); // Simulate network latency
-    } else {
-      return throwError(() => new Error('Failed request')).pipe(delay(1000));
-    }
+  getData(ingredients: string[]): Observable<any> {
+    return of(null).pipe(
+      delay(2000), 
+      mergeMap(() => {
+        const isSuccess = Math.random() > 0.5; 
+        if (isSuccess) {
+          return of({
+            data: ingredients, // Return the passed ingredients
+          });
+        } else {
+          return throwError(() => new Error('Random error occurred'));
+        }
+      })
+    );
   }
 }

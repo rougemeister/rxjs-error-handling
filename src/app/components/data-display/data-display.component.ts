@@ -32,38 +32,40 @@ export class DataDisplayComponent {
   fetchData() {
     this.loading = true;
     this.error = null;
-
-    this.httpService.getData()
-      .pipe(
-        tap(() => console.log('Request initiated')),
-        retryWhen(errors =>
-          errors.pipe(
-            scan((retryCount, err) => {
-              if (retryCount >= 3) {
-                throw err; // Stop retrying after 3 attempts
-              }
-              console.log(`Retry attempt ${retryCount + 1}`);
-              return retryCount + 1;
-            }, 0),
-            delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000)) // Exponential backoff
-          )
-        ),
-        catchError(err => {
-          console.error('Handling error:', err);
-          this.error = 'Request failed after multiple retries.';
-          return of({ data: this.fallBackArr }); // Provide fallback response
-        }),
-        tap(data => console.log('Received data:', data))
-      )
-      .subscribe({
-        next: (response) => {
-          this.data = response.data;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = err.message;
-          this.loading = false;
-        }
-      });
+  
+    this.httpService.getData(this.jollofRiceIngredients) 
+    .pipe(
+      tap(() => console.log('Request initiated')),  
+      retryWhen(errors =>
+        errors.pipe(
+          scan((retryCount, err) => {
+            if (retryCount >= 3) {
+              throw err;
+            }
+            console.log(`Retry attempt ${retryCount + 1}`);
+            return retryCount + 1;
+          }, 0),
+          delayWhen(retryCount => timer(Math.pow(2, retryCount) * 1000))
+        )
+      ),
+      catchError(err => {
+        console.error('Handling error:', err);
+        this.error = 'Request failed after multiple retries.';
+        return of({ data: this.fallBackArr }); 
+      }),
+      tap(data => console.log('Received data:', data))  
+    )
+    .subscribe({
+      next: (response) => {
+        this.data = response.data;
+        this.loading = false;  
+      },
+      error: (err) => {
+        this.error = err.message;  
+        this.loading = false; 
+      }
+    });
+  
   }
+  
 }
